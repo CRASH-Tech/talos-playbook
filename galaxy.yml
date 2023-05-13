@@ -1,4 +1,4 @@
-namespace: talos
+namespace: kubernetes
 name: talos
 version: 1.0.0
 readme: README.md
