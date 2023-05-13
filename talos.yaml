@@ -1,0 +1,10 @@
+---
+
+- hosts: all
+  gather_facts: false
+  vars:
+    ansible_connection: local
+    cluster_name: "{{ (inventory_file | basename).split('.') | first }}"
+  roles:
+    - role: talos
+      delegate_to: localhost

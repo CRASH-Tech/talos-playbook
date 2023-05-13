@@ -1,0 +1,19 @@
+---
+
+- name: Encrypt secret data
+  run_once: true
+  no_log: true
+  shell: >
+    ansible-vault encrypt secrets/{{ item }}.yaml
+    --output "{{ item }}.yaml.enc"
+    --vault-password-file ../../.vault_pass
+    && md5sum secrets/{{ item }}.yaml
+  args:
+    chdir: ../clusters/{{ cluster_name }}
+  vars:
+    query: "results[?item=='{{ item }}'].stat.checksum"
+  register: result
+  loop: "{{ secrets }}"
+  changed_when: >
+    (decrypted_stats | json_query(query) | join()) == "" or
+    (decrypted_stats | json_query(query) | join()) not in result.stdout

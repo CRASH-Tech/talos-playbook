@@ -1,0 +1,12 @@
+machine:
+  network:
+    hostname: {{ inventory_hostname }}
+    interfaces:
+      - interface: eth0
+        dhcp: false
+        addresses:
+          - {{ ip }}
+        routes:
+          - network: 0.0.0.0/0
+            gateway: {{ default_gateway }}
+    nameservers: {{ nameservers | to_yaml }}

@@ -1,0 +1,6 @@
+cluster:
+  network:
+    cni:
+      name: custom
+      urls:
+        - https://raw.githubusercontent.com/projectcalico/calico/v3.25.1/manifests/canal.yaml

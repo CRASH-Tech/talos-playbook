@@ -1,0 +1,65 @@
+---
+
+- name: Apply bootstrap node config
+  retries: 10
+  delay: 30
+  register: result
+  until: result.rc == 0
+  shell: >
+    talosctl apply-config -i
+    --talosconfig secrets/talosconfig.yaml
+    -f secrets/{{ inventory_hostname }}.yaml
+    -n {{ ip | regex_replace('/.+','')  }}
+  args:
+    chdir: ../clusters/{{ cluster_name }}
+  vars:
+    query: "results[?item=='{{ inventory_hostname }}'].stat.exists"
+  when:
+    - (encrypted_stats | json_query(query))[0] == false
+
+- name: Apply node config
+  retries: 10
+  delay: 10
+  register: result
+  until: result.rc == 0
+  shell: >
+    talosctl apply-config
+    --talosconfig secrets/talosconfig.yaml
+    --mode=no-reboot
+    -f secrets/{{ inventory_hostname }}.yaml
+    -n {{ ip | regex_replace('/.+','')  }}
+  args:
+    chdir: ../clusters/{{ cluster_name }}
+  vars:
+    query: "results[?item=='{{ inventory_hostname }}'].stat.exists"
+  when:
+    - (encrypted_stats | json_query(query))[0] == true
+
+- name: Bootstrap cluster
+  run_once: true
+  retries: 10
+  delay: 30
+  register: result
+  until: result.rc == 0
+  shell: >
+    talosctl bootstrap
+    --talosconfig secrets/talosconfig.yaml
+    -n {{ ip | regex_replace('/.+','')  }}
+  args:
+    chdir: ../clusters/{{ cluster_name }}
+  when:
+    - inventory_hostname == groups['controlplane'][0]
+    - cluster_dir.changed
+
+- name: Get kubeconfig
+  run_once: true
+  retries: 10
+  delay: 30
+  register: result
+  until: result.rc == 0
+  shell: >
+    talosctl kubeconfig
+    --talosconfig secrets/talosconfig.yaml
+    -n {{ cluster_vip }} ~/.kube/{{ kubeconfig_prefix }}{{ cluster_name }}.yaml
+  args:
+    chdir: ../clusters/{{ cluster_name }}

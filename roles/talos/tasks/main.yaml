@@ -1,0 +1,39 @@
+---
+
+- include_tasks: check.yaml
+  tags:
+    - check
+
+- include_tasks: prepare.yaml
+  when: apply_configs is defined and apply_configs == "true"
+  tags:
+    - prepare
+
+- include_tasks: generate.yaml
+  when: apply_configs is defined and apply_configs == "true"
+  tags:
+    - generate
+
+- include_tasks: patch.yaml
+  when: apply_configs is defined and apply_configs == "true"
+  tags:
+    - patch
+
+- include_tasks: bootstrap.yaml
+  when: apply_configs is defined and apply_configs == "true"
+  tags:
+    - bootstrap
+
+- include_tasks: encrypt.yaml
+  when: apply_configs is defined and apply_configs == "true"
+  tags:
+    - encrypt
+
+- include_tasks: charts.yaml
+  when: install_charts is defined and install_charts == "true"
+  tags:
+    - charts
+
+- include_tasks: upgrade.yaml
+  tags:
+    - upgrade

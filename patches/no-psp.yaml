@@ -1,0 +1,19 @@
+cluster:
+  apiServer:
+    disablePodSecurityPolicy: true
+    admissionControl:
+      - name: PodSecurity
+        configuration:
+          apiVersion: pod-security.admission.config.k8s.io/v1alpha1
+          kind: PodSecurityConfiguration
+          defaults:
+              audit: privileged
+              audit-version: latest
+              enforce: privileged
+              enforce-version: latest
+              warn: privileged
+              warn-version: latest
+          exemptions:
+              namespaces: []
+              runtimeClasses: []
+              usernames: []

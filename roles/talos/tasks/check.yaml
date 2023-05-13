@@ -1,0 +1,10 @@
+---
+
+- name: Check talosctl version
+  run_once: true
+  no_log: true
+  shell: >
+    talosctl version --short --client
+  register: talosctl_version
+  changed_when: false
+  failed_when: talos_version not in talosctl_version.stdout

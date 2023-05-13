@@ -1,0 +1,13 @@
+---
+
+- name: Install charts
+  run_once: true
+  shell: >
+    werf converge --kube-config ~/.kube/{{ kubeconfig_prefix }}{{ cluster_name }}.yaml
+    --dev
+    --disable-auto-host-cleanup
+    --skip-dependencies-repo-refresh
+    --values .helm/values.{{ cluster_name }}.yaml
+  args:
+    chdir: ../charts/{{ item }}
+  loop: "{{ charts }}"

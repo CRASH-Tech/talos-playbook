@@ -1,0 +1,35 @@
+machine:
+  registries:
+    mirrors:
+      docker.io:
+        endpoints:
+          - https://harbor.uis.st/v2/proxy-docker.io
+        overridePath: true
+      hub.docker.com:
+        endpoints:
+          - https://harbor.uis.st/v2/proxy-docker.io
+        overridePath: true
+      k8s.io:
+        endpoints:
+          - https://harbor.uis.st/v2/proxy-k8s.io
+        overridePath: true
+      registry.k8s.io:
+        endpoints:
+          - https://harbor.uis.st/v2/proxy-registry.k8s.io
+        overridePath: true
+      gcr.io:
+        endpoints:
+          - https://harbor.uis.st/v2/proxy-gcr.io
+        overridePath: true
+      k8s.gcr.io:
+        endpoints:
+          - https://harbor.uis.st/v2/proxy-k8s.gcr.io
+        overridePath: true
+      ghcr.io:
+        endpoints:
+          - https://harbor.uis.st/v2/proxy-ghcr.io
+        overridePath: true
+      quay.io:
+        endpoints:
+          - https://harbor.uis.st/v2/quay.io
+        overridePath: true

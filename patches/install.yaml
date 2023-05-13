@@ -1,0 +1,4 @@
+machine:
+  install:
+    disk: /dev/sda
+    image: ghcr.io/siderolabs/installer:{{ talos_version }}

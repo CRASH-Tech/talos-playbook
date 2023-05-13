@@ -1,0 +1,10 @@
+machine:
+  install:
+    extensions:
+      - image: ghcr.io/siderolabs/drbd:9.2.2-v1.4.0
+  kernel:
+    modules:
+      - name: drbd
+        parameters:
+          - usermode_helper=disabled
+      - name: drbd_transport_tcp
