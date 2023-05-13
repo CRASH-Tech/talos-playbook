@@ -1,0 +1,12 @@
+namespace: talos
+name: talos
+version: 1.0.0
+readme: README.md
+authors:
+  - Sergey Kharlamov (crash.ntech@gmail.com)
+description: Ansible playbook for the Talos Linux
+tags: [talos, kubernetes]
+repository: https://github.com/CRASH-Tech/talos-playbook
+documentation: https://github.com/CRASH-Tech/talos-playbook/blob/main/README.md
+homepage: https://github.com/CRASH-Tech/talos-playbook
+issues: https://github.com/CRASH-Tech/talos-playbook/issues
