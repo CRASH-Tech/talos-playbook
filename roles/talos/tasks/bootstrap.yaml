@@ -11,7 +11,7 @@
     -f secrets/{{ inventory_hostname }}.yaml
     -n {{ ip | regex_replace('/.+','')  }}
   args:
-    chdir: ../clusters/{{ cluster_name }}
+    chdir: "{{ inventory_dir }}/clusters/{{ cluster_name }}"
   vars:
     query: "results[?item=='{{ inventory_hostname }}'].stat.exists"
   when:
@@ -29,7 +29,7 @@
     -f secrets/{{ inventory_hostname }}.yaml
     -n {{ ip | regex_replace('/.+','')  }}
   args:
-    chdir: ../clusters/{{ cluster_name }}
+    chdir: "{{ inventory_dir }}/clusters/{{ cluster_name }}"
   vars:
     query: "results[?item=='{{ inventory_hostname }}'].stat.exists"
   when:
@@ -46,7 +46,7 @@
     --talosconfig secrets/talosconfig.yaml
     -n {{ ip | regex_replace('/.+','')  }}
   args:
-    chdir: ../clusters/{{ cluster_name }}
+    chdir: "{{ inventory_dir }}/clusters/{{ cluster_name }}"
   when:
     - inventory_hostname == groups['controlplane'][0]
     - cluster_dir.changed
@@ -62,4 +62,4 @@
     --talosconfig secrets/talosconfig.yaml
     -n {{ cluster_vip }} ~/.kube/{{ kubeconfig_prefix }}{{ cluster_name }}.yaml
   args:
-    chdir: ../clusters/{{ cluster_name }}
+    chdir: "{{ inventory_dir }}/clusters/{{ cluster_name }}"

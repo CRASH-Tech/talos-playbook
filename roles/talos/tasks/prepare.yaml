@@ -14,7 +14,7 @@
 - name: Create cluster dir
   run_once: true
   file:
-    path: "../clusters/{{ cluster_name }}"
+    path: "{{ inventory_dir }}/clusters/{{ cluster_name }}"
     state: directory
     mode: '0755'
   register: cluster_dir
@@ -22,7 +22,7 @@
 - name: Create cluster dirs
   run_once: true
   file:
-    path: "../clusters/{{ cluster_name }}/{{ item }}"
+    path: "{{ inventory_dir }}/clusters/{{ cluster_name }}/{{ item }}"
     state: directory
     mode: '0755'
   loop:
@@ -31,7 +31,7 @@
 - name: Get decrypted secrets stat
   run_once: true
   stat:
-    path: "../clusters/{{ cluster_name }}/secrets/{{ item }}.yaml"
+    path: "{{ inventory_dir }}/clusters/{{ cluster_name }}/secrets/{{ item }}.yaml"
     checksum_algorithm: md5
   register: decrypted_stats
   loop: "{{ secrets }}"
@@ -39,7 +39,7 @@
 - name: Get encrypted secrets stat
   run_once: true
   stat:
-    path: "../clusters/{{ cluster_name }}/{{ item }}.yaml.enc"
+    path: "{{ inventory_dir }}/clusters/{{ cluster_name }}/{{ item }}.yaml.enc"
     checksum_algorithm: md5
   register: encrypted_stats
   loop: "{{ secrets }}"
@@ -50,10 +50,10 @@
   shell: >
     ansible-vault decrypt "{{ item.item }}.yaml.enc"
     --output secrets/{{ item.item }}.yaml
-    --vault-password-file ../../.vault_pass
+    --vault-password-file {{ inventory_dir }}/.vault_pass
     && md5sum secrets/{{ item.item }}.yaml
   args:
-    chdir: ../clusters/{{ cluster_name }}
+    chdir: "{{ inventory_dir }}/clusters/{{ cluster_name }}"
   vars:
     query: "results[?item=='{{ item.item }}'].stat.checksum"
   register: result

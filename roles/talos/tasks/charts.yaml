@@ -9,5 +9,5 @@
     --skip-dependencies-repo-refresh
     --values .helm/values.{{ cluster_name }}.yaml
   args:
-    chdir: ../charts/{{ item }}
+    chdir: "{{ inventory_dir }}/charts/{{ item }}"
   loop: "{{ charts }}"

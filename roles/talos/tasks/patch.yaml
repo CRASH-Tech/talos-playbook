@@ -2,16 +2,16 @@
 
 - name: Copy default controlplane config
   copy:
-    src: ../clusters/{{ cluster_name }}/secrets/controlplane.yaml
-    dest: ../clusters/{{ cluster_name }}/secrets/{{ inventory_hostname }}.yaml
+    src: "{{ inventory_dir }}/clusters/{{ cluster_name }}/secrets/controlplane.yaml"
+    dest: "{{ inventory_dir }}/clusters/{{ cluster_name }}/secrets/{{ inventory_hostname }}.yaml"
     force: true
   when: "'controlplane' in group_names"
   changed_when: false
 
 - name: Copy default worker config
   copy:
-    src: ../clusters/{{ cluster_name }}/secrets/worker.yaml
-    dest: ../clusters/{{ cluster_name }}/secrets/{{ inventory_hostname }}.yaml
+    src: "{{ inventory_dir }}/clusters/{{ cluster_name }}/secrets/worker.yaml"
+    dest: "{{ inventory_dir }}/clusters/{{ cluster_name }}/secrets/{{ inventory_hostname }}.yaml"
     force: true
   when: "'worker' in group_names"
   changed_when: false
@@ -25,7 +25,7 @@
 
 - name: Copy patch templates
   template:
-    src: ../patches/{{ item }}
+    src: "{{ inventory_dir }}/patches/{{ item }}"
     dest: "{{ patch_dir.path }}/{{ inventory_hostname }}_{{ item }}"
   loop: "{{ patches }}"
   changed_when: false
@@ -36,6 +36,6 @@
     --patch @{{ patch_dir.path }}/{{ inventory_hostname }}_{{ item }}
     -o secrets/{{ inventory_hostname }}.yaml
   args:
-    chdir: ../clusters/{{ cluster_name }}
+    chdir: "{{ inventory_dir }}/clusters/{{ cluster_name }}"
   loop: "{{ patches }}"
   changed_when: false

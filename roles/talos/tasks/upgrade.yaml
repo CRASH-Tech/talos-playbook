@@ -9,7 +9,7 @@
   register: talos_node_version_result
   changed_when: false
   args:
-    chdir: ../clusters/{{ cluster_name }}
+    chdir: "{{ inventory_dir }}/clusters/{{ cluster_name }}"
   when: upgrade_talos is defined and upgrade_talos == "true"
 
 - name: Parse talos version
@@ -32,7 +32,7 @@
     --image ghcr.io/siderolabs/installer:{{ talos_version }}
     || sleep 60
   args:
-    chdir: ../clusters/{{ cluster_name }}
+    chdir: "{{ inventory_dir }}/clusters/{{ cluster_name }}"
   throttle: 1
   when:
     - upgrade_talos is defined and upgrade_talos == "true"
