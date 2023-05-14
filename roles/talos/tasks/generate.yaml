@@ -1,0 +1,63 @@
+---
+
+- name: Generate secrets
+  run_once: true
+  shell: >
+    talosctl gen secrets -o secrets/secrets.yaml
+  args:
+    chdir: "{{ inventory_dir }}/clusters/{{ cluster_name }}"
+    creates: secrets/secrets.yaml
+
+- name: Generate control-plane config
+  run_once: true
+  shell: >
+    talosctl gen config
+    --with-examples=false
+    --with-secrets secrets/secrets.yaml
+    --talos-version {{ talos_version }}
+    --kubernetes-version {{ kubernetes_version }}
+    -t controlplane
+    {{ cluster_name }} {{ cluster_endpoint }}
+    -o secrets/controlplane.yaml
+  args:
+    chdir: "{{ inventory_dir }}/clusters/{{ cluster_name }}"
+    creates: secrets/controlplane.yaml
+
+- name: Generate worker config
+  run_once: true
+  shell: >
+    talosctl gen config
+    --with-examples=false
+    --with-secrets secrets/secrets.yaml
+    --talos-version {{ talos_version }}
+    --kubernetes-version {{ kubernetes_version }}
+    -t worker
+    {{ cluster_name }} {{ cluster_endpoint }}
+    -o secrets/worker.yaml
+  args:
+    chdir: "{{ inventory_dir }}/clusters/{{ cluster_name }}"
+    creates: secrets/worker.yaml
+
+- name: Generate talos config
+  run_once: true
+  shell: >
+    talosctl gen config
+    --with-examples=false
+    --with-secrets secrets/secrets.yaml
+    --talos-version {{ talos_version }}
+    --kubernetes-version {{ kubernetes_version }}
+    -t talosconfig
+    {{ cluster_name }} {{ cluster_endpoint }}
+    -o secrets/talosconfig.yaml
+  args:
+    chdir: "{{ inventory_dir }}/clusters/{{ cluster_name }}"
+    creates: secrets/talosconfig.yaml
+
+- name: Set talosconfig endpoints
+  run_once: true
+  shell: >
+    talosctl config endpoint --talosconfig secrets/talosconfig.yaml
+    {{ groups['all'] | map('extract', hostvars, ['ip']) | map('regex_replace', '/.+', '') | join(' ') }}
+  args:
+    chdir: "{{ inventory_dir }}/clusters/{{ cluster_name }}"
+  changed_when: false
