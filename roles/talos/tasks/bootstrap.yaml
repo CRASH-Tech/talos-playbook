@@ -60,7 +60,8 @@
   shell: >
     talosctl kubeconfig
     --talosconfig secrets/talosconfig.yaml
-    -m false
+    -f
+    -m=false
     -n {{ cluster_vip }}
     -e {{ cluster_vip }}
     ~/.kube/{{ kubeconfig_prefix }}{{ cluster_name }}.yaml

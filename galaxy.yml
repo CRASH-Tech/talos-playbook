@@ -1,6 +1,6 @@
 namespace: crash_tech
 name: kubernetes
-version: 1.0.2
+version: 1.0.3
 readme: README.md
 authors:
   - Sergey Kharlamov (crash.ntech@gmail.com)
