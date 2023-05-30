@@ -1,6 +1,6 @@
 # How to use this playbook
 
-- Create requirements.yaml
+- Create requirements.yml
   ```
   collections:
     - name: https://github.com/CRASH-Tech/talos-playbook.git
@@ -9,7 +9,7 @@
   ```
 - Install playbook
   ```
-  ansible-galaxy collection install -r requirements.yaml
+  ansible-galaxy collection install -r requirements.yml
   ```
 - Create ansible-vault secret file
   ```
