@@ -2,12 +2,3 @@ machine:
   install:
     extensions:
       - image: ghcr.io/siderolabs/iscsi-tools:v0.1.4
-  kubelet:
-    extraMounts:
-      - destination: /var/openebs/local
-        type: bind
-        source: /var/openebs/local
-        options:
-          - bind
-          - rshared
-          - rw
