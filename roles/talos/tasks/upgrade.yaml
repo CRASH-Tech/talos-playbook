@@ -30,6 +30,7 @@
     -e {{ ip | regex_replace('/.+','')  }}
     -n {{ ip | regex_replace('/.+','')  }}
     --image ghcr.io/siderolabs/installer:{{ talos_version }}
+    --preserve
     || sleep 60
   args:
     chdir: "{{ inventory_dir }}/clusters/{{ cluster_name }}"
